@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import Navbar from './Navbar'
-import Categorylist from './Categorylist'
+import {Grid} from 'semantic-ui-react';
+import Navbar from './Navbar';
+import ChatRoomContainer from '../container/ChatRoomContainer'
+import Login from './Login'
+import Signup from './Signup'
 
 class App extends Component {
   state = {
-    currentUser: false,
-    roomSelected: false,
+    currentUser: null,
   }
+
+  setCurrentUser = (name) => {
+    this.setState({currentUser: name})
+  }
+
   render() {
     return (
       <div className="App">
@@ -16,33 +23,11 @@ class App extends Component {
           <div><h1>StartYourChat</h1></div>
         </header>
 
-        <Navbar currentUser={this.state.currentUser}/>
+        <Navbar setCurrentUser={this.setCurrentUser}/>
         <hr />
-        <section>
-          {this.state.roomSelected ? (
-            <div>Title</div>
-          ) : (
-            null
-          )}
-          <div className="ui grid">
-            <div className="row">
-              <div className="left three wide column">
-                {this.state.roomSelected ? (
-                  <div>Users</div>
-                ) : (
-                  <Categorylist />
-                )}
-              </div>
-              <div className="right ten wide column">
-                {this.state.roomSelected ? (
-                  <div>ChatRoom</div>
-                ) : (
-                  <div>Rooms List</div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
+        <Route exact path="/" component={ChatRoomContainer} />
+        <Route path="/login" render={(props)=><Login setCurrentUser={this.setCurrentUser} {...props}/>}/>
+        <Route path="/signup" render={(props) => <Signup setCurrentUser={this.setCurrentUser} {...props}/>}/>
       </div>
     );
   }
