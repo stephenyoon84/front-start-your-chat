@@ -44,7 +44,7 @@ export default class RoomList extends Component {
         <hr />
         <ul>
           {this.filterByCategory().map(room => {
-            return <li key={room.id} data-category={room.category_id}><h4 onClick={(e) => this.props.selectChatRoom(e, room.id)}>{room.title}</h4> updated: {new Date(room.updated_at).toLocaleString()}</li>
+            return <li key={room.id} data-category={room.category_id}><h4 onClick={(e) => this.props.selectChatRoom(e, room.id)}>{room.title}</h4> created: {new Date(room.updated_at).toLocaleString()}</li>
           })}
         </ul>
       </Fragment>
