@@ -13,7 +13,7 @@ export default class CreateRoom extends Component {
     fetch("http://localhost:3001/api/v1/rooms", {
       method: 'POST',
       headers: {
-        "Content_Type": "application/json",
+        "Content-Type": "application/json",
         "Accept": "application/json",
         Authorization: `Bearer ${token}`
       },
@@ -24,11 +24,7 @@ export default class CreateRoom extends Component {
         }
       })
     }).then(r => r.json())
-      .then(() => this.props.createNewRoomToggle())
-  }
-
-  handleResponse = json => {
-
+      .then(this.props.createNewRoomToggle())
   }
 
   changeHandler = e => {

@@ -3,6 +3,7 @@ import {Grid, Input} from 'semantic-ui-react';
 
 export default class RoomList extends Component {
   // state = {
+  //   activeRoom: null
   // }
   //
   // componentDidMount(){
@@ -16,7 +17,7 @@ export default class RoomList extends Component {
       return this.props.chatRooms
     }
     const catS = this.props.categorySelected.id
-    return this.props.chatRooms.filter(room => room.category_id === catS)
+    return this.props.chatRooms.filter(room => room.category.id === catS)
   }
 
   render() {

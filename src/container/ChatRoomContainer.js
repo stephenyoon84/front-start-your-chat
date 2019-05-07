@@ -5,6 +5,8 @@ import Categorylist from '../components/Categorylist';
 import RoomList from '../components/RoomList';
 import CreateRoom from '../components/CreateRoom'
 import Chatroom from '../components/Chatroom'
+import {ActionCableConsumer} from 'react-actioncable-provider'
+
 
 class ChatRoomContainer extends Component {
   state = {
@@ -27,6 +29,13 @@ class ChatRoomContainer extends Component {
       .then(r => r.json())
       .then(chatRooms => this.setState({chatRooms}))
 
+  }
+
+  handleReceivedRoom = response => {
+    const {room} = response;
+    this.setState({
+      chatRooms: [...this.state.chatRooms, room]
+    })
   }
 
   addNewCategory = (category) => {
@@ -66,6 +75,7 @@ class ChatRoomContainer extends Component {
               )}
             </Grid.Column>
             <Grid.Column floated='right' width={12}>
+              <ActionCableConsumer channel={{ channel: 'RoomsChannel' }} onReceived={this.handleReceivedRoom} />
               {this.state.roomSelected ? (
                 <Chatroom selectChatRoom={this.backToRoomList} room={this.state.roomSelected}/>
               ) : ( this.state.createNewRoom ? (
