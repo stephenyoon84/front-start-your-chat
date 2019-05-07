@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Form} from 'semantic-ui-react';
+import {ActionCableConsumer} from 'react-actioncable-provider';
+import Cable from './Cable';
 
 export default class Chatroom extends Component {
   state = {
@@ -22,6 +24,11 @@ export default class Chatroom extends Component {
       .then(() => this.updateScroll())
   }
 
+  handleReceivedMessage = response => {
+    const {message} = response;
+    this.setState({messages: [...this.state.messages, response.room_message]})
+  }
+
   updateScroll = () => {
     const element = document.querySelector('.chat')
     if (!!element) {
@@ -37,7 +44,7 @@ export default class Chatroom extends Component {
     fetch('http://localhost:3001/api/v1/room_messages', {
       method: 'POST',
       headers: {
-        "Content_Type": "application/json",
+        "Content-Type": "application/json",
         "Accept": "application/json",
         Authorization: `Bearer ${token}`
       },
@@ -56,6 +63,7 @@ export default class Chatroom extends Component {
       <div>
         <div><h2>{this.props.room.title}</h2></div>
         <div className="chat" data-channel-subscribe="room" data-room-id={this.props.room.id}>
+          <ActionCableConsumer channel={{channel: 'RoomMessagesChannel'}} onReceived={this.handleReceivedMessage} />
           {
             this.state.messages.map(msg => {
               return (
