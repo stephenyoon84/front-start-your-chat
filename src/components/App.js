@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import {Grid} from 'semantic-ui-react';
 import Navbar from './Navbar';
 import ChatRoomContainer from '../container/ChatRoomContainer'
 import Login from './Login'

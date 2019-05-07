@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import {Grid} from 'semantic-ui-react';
 import Categorylist from '../components/Categorylist';
 import RoomList from '../components/RoomList';
+import CreateRoom from '../components/CreateRoom'
+import Chatroom from '../components/Chatroom'
 
 class ChatRoomContainer extends Component {
   state = {
@@ -11,6 +12,7 @@ class ChatRoomContainer extends Component {
     roomSelected: false,
     categories: [{id: 0, name: 'All'}],
     createNewRoom: false,
+    chatRooms: [],
   }
 
   componentDidMount(){
@@ -21,40 +23,55 @@ class ChatRoomContainer extends Component {
           categories: [...this.state.categories, ...cat]
         })
       })
+    fetch('http://localhost:3001/api/v1/rooms')
+      .then(r => r.json())
+      .then(chatRooms => this.setState({chatRooms}))
+
   }
 
   addNewCategory = (category) => {
     this.setState({categories: [...this.state.categories, category]})
   }
 
+  createNewRoomToggle = () => {
+    this.setState({createNewRoom: !this.state.createNewRoom})
+  }
+
   changeCategory = (name) => {
     this.setState({categorySelected: name})
   }
 
+  selectChatRoom = (e, id) => {
+    const room = this.state.chatRooms.find(r => r.id === id)
+    if (!!localStorage.token) {
+      this.setState({roomSelected: room})
+    }
+  }
+
+  backToRoomList = () => {
+    this.setState({roomSelected: null})
+  }
+
+
   render() {
     return (
       <section>
-        {this.state.roomSelected ? (
-          <div>Title</div>
-        ) : (
-          null
-        )}
         <div className="ui grid">
           <div className="row">
             <Grid.Column floated='left' width={3}>
               {this.state.roomSelected ? (
-                <div>Users</div>
+                <div>Details</div>
               ) : (
                 <Categorylist categories={this.state.categories} changeCategory={this.changeCategory} addNewCategory={this.addNewCategory}/>
               )}
             </Grid.Column>
             <Grid.Column floated='right' width={12}>
               {this.state.roomSelected ? (
-                <div>ChatRoom</div>
+                <Chatroom selectChatRoom={this.backToRoomList} room={this.state.roomSelected}/>
               ) : ( this.state.createNewRoom ? (
-                  <div>Create New Room</div>
+                  <CreateRoom createNewRoomToggle={this.createNewRoomToggle} categories={this.state.categories}/>
                 ) : (
-                  <RoomList categorySelected={this.state.categorySelected}/>
+                  <RoomList categorySelected={this.state.categorySelected} createNewRoomToggle={this.createNewRoomToggle} selectChatRoom={this.selectChatRoom} chatRooms={this.state.chatRooms}/>
                 )
               )}
             </Grid.Column>
