@@ -21,6 +21,7 @@ class ChatRoomContainer extends Component {
     fetch('http://localhost:3001/api/v1/categories')
       .then(r => r.json())
       .then(cat => {
+        console.log(cat)
         this.setState({
           categories: [...this.state.categories, ...cat]
         })
@@ -31,12 +32,12 @@ class ChatRoomContainer extends Component {
 
   }
 
-  handleReceivedRoom = response => {
-    const {room} = response;
-    this.setState({
-      chatRooms: [...this.state.chatRooms, room]
-    })
-  }
+  // handleReceivedRoom = response => {
+  //   const {room} = response;
+  //   this.setState({
+  //     chatRooms: [...this.state.chatRooms, room]
+  //   })
+  // }
 
   addNewCategory = (category) => {
     this.setState({categories: [...this.state.categories, category]})

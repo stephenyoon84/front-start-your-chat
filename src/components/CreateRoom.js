@@ -15,7 +15,7 @@ export default class CreateRoom extends Component {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        Authorization: `Bearer ${token}`
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
         room: {
