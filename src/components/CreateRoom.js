@@ -24,6 +24,7 @@ export default class CreateRoom extends Component {
         }
       })
     }).then(r => r.json())
+      .then(room => this.props.handleReceivedRoom(room))
       .then(this.props.createNewRoomToggle())
   }
 

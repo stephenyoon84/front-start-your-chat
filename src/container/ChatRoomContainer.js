@@ -32,12 +32,11 @@ class ChatRoomContainer extends Component {
 
   }
 
-  // handleReceivedRoom = response => {
-  //   const {room} = response;
-  //   this.setState({
-  //     chatRooms: [...this.state.chatRooms, room]
-  //   })
-  // }
+  handleReceivedRoom = room => {
+    this.setState({
+      chatRooms: [...this.state.chatRooms, room]
+    })
+  }
 
   addNewCategory = (category) => {
     this.setState({categories: [...this.state.categories, category]})
@@ -76,11 +75,10 @@ class ChatRoomContainer extends Component {
               )}
             </Grid.Column>
             <Grid.Column floated='right' width={12}>
-              <ActionCableConsumer channel={{ channel: 'RoomsChannel' }} onReceived={this.handleReceivedRoom} />
               {this.state.roomSelected ? (
                 <Chatroom selectChatRoom={this.backToRoomList} room={this.state.roomSelected}/>
               ) : ( this.state.createNewRoom ? (
-                  <CreateRoom createNewRoomToggle={this.createNewRoomToggle} categories={this.state.categories}/>
+                  <CreateRoom createNewRoomToggle={this.createNewRoomToggle} categories={this.state.categories} handleReceivedRoom={this.handleReceivedRoom}/>
                 ) : (
                   <RoomList categorySelected={this.state.categorySelected} createNewRoomToggle={this.createNewRoomToggle} selectChatRoom={this.selectChatRoom} chatRooms={this.state.chatRooms}/>
                 )

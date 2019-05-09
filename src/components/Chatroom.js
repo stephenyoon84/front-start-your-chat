@@ -25,6 +25,7 @@ export default class Chatroom extends Component {
   }
 
   handleReceivedMessage = response => {
+    console.log(response);
     const {message} = response;
     this.setState({messages: [...this.state.messages, response.room_message]})
   }
@@ -45,7 +46,6 @@ export default class Chatroom extends Component {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
@@ -54,7 +54,7 @@ export default class Chatroom extends Component {
           room_id: room_id
         }
       })
-    }).then(r => r.json())
+    })
     e.target.message.value = ""
   }
 
@@ -62,8 +62,8 @@ export default class Chatroom extends Component {
     return (
       <div>
         <div><h2>{this.props.room.title}</h2></div>
+        <ActionCableConsumer channel={{channel: 'RoomMessagesChannel'}} onReceived={this.handleReceivedMessage} />
         <div className="chat" data-channel-subscribe="room" data-room-id={this.props.room.id}>
-          <ActionCableConsumer channel={{channel: 'RoomMessagesChannel'}} onReceived={this.handleReceivedMessage} />
           {
             this.state.messages.map(msg => {
               return (

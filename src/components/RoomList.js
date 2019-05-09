@@ -13,6 +13,7 @@ export default class RoomList extends Component {
   // }
 
   filterByCategory = () => {
+    console.log(this.props.chatRooms);
     if (this.props.categorySelected.name === 'All') {
       return this.props.chatRooms
     }
@@ -45,6 +46,7 @@ export default class RoomList extends Component {
         <hr />
         <ul>
           {this.filterByCategory().map(room => {
+            // console.log(room)
             return <li key={room.id} data-category={room.category_id}><h4 onClick={(e) => this.props.selectChatRoom(e, room.id)}>{room.title}</h4> created: {new Date(room.updated_at).toLocaleString()}</li>
           })}
         </ul>
